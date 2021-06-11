@@ -39,6 +39,8 @@ There are two ways to retrieve the current active language:
 
 ## Localisation with locales
 
+> Instead of using the locales system, we recommend you to make usage of the php intl extension, which is commonly available. Therfore f.e you use `Yii::$app->formatter->asDateTime($time, 'MMMM yyyy')` instead of  `strftime("%B %Y", $date);`. Take a look at the formating syntax here http://userguide.icu-project.org/formatparse/datetime
+
 As the composition component can override the {{yii\base\Application::$language}} which is the base property for all translations within a Yii system you can define localisations for each language. Localisation are usually set trough setlocale() this is what LUYA does in the {{luya\traits\ApplicationTrait}}. You can define a localisation file for each language with the {{luya\traits\ApplicationTrait::$locales}} property, for example when language `de` is given it should take the `de_CH.utf8` locale file:
 
 ```php
@@ -79,7 +81,14 @@ $langShortCode = Yii::$app->composition['langShortCode'];
 $countryShortCode = Yii::$app->composition['countryShortCode'];
 ```
 
+## Language Parameter for APIs
+
+Since version 3.1 of LUYA Admin the [ConentNegotiator](https://www.yiiframework.com/doc/api/2.0/yii-filters-contentnegotiator) correctly receives all available LUYA Admin languages. For instance, when you have setup `fr`, `de` and `en`, then the ContentNegotiator will listen to `Vary` `Accept` or `Accept-Language` Header, as well for `_lang` get param. If the content negotiator can detected one of the given languages in those methods, the `Yii::$app->language` will recieve this value, which will also be used to deocde/encode {{luya\admin\ngrest\base\NgRestModel::$i18n}} attributes.
+
+In consequences, this also means that the {{luya\web\Composition}} localisation in the URL (f.e. `de/foobar`) has no effect when working with APIs, either use HTTP Headers or `_lang` get parameter. In order restore the behavior before 3.1 which has taken the composition language path into account, you can configure {{luya\admin\components\AdminLanguage::$activeShortCodeCallable}}, but its not recommended.
+
 ## Other language related topics
 
++ [[app-translation.md]] - Register and create message files.
 + {{luya\cms\widgets\LangSwitcher}} - A widget to switch between languages.
 + {{luya\admin\ngrest\base\NgRestModel::$i18n}} - Option to enable i18n for ngrest models.

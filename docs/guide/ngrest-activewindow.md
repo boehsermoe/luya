@@ -61,6 +61,21 @@ public function ngRestActiveWindows()
 }
 ```
 
+#### Button condition
+
+A button condition can be defined adding a `condition` string to be evaluated towards the row fields. Example:
+
+```php
+public function ngRestActiveWindows()
+{
+    return [
+        ['class' => \luya\admin\aws\TestActiveWindow::className(), 'label' => 'My Window Alias', 'icon' => 'extension', 'condition' => '{firstname}==\'foo\''],
+    ];
+}
+```
+
+This `My Windows Alias` button will only be shown for if the row `firstname` equals to 'foo' 
+
 ### View files
 
 To render view files you can run the method `$this->render()` inside your ActiveWindow class. The render method will lookup for php view file based on the base path of your `$module` property. Lets assume we run `$this->render('index')` and have defined `admin` as your `$module` property and your Active Window name is `TestActiveWindow` this will try to find the view file under the path `@admin/views/aws/test/index.php`. 
@@ -159,6 +174,37 @@ When working with angular you might want to trigger some of the functions of the
 |`$scope.$parent.toast.success(message)`|Display a success toast message.
 |`$scope.$parent.sendActiveWindowCallback(callbackName, params)`|XHR request for given callbackName with additional params.
 
+## Button permission level
+
+In addition to button condition a permission level can be set. This will ensure displaying the buttons only when proper permission level is met.
+This can be defined with the `permissionLevel` atrribute. Example:
+
+```php
+public function ngRestActiveWindows()
+{
+    return [
+        ['class' => \luya\admin\aws\TestActiveWindow::className(), 'label' => 'My Window ', 'permissionLevel' => Auth::CAN_VIEW],
+    ];
+}
+```
+
+Above example will add the TestActiveWindow button if the user has the VIEW permission of the model.
+
+If `permissionLevel` attribute is not set, the default behavior is applied which is `CAN_UPDATE` permission is required.
+
+```php
+...
+        ['class' => \luya\admin\aws\TestActiveWindow::className(), 'label' => 'My Window'],
+...
+```
+
+To disable permission checks, you have to set the `permissionLevel` to am empty string: 
+
+```php
+...
+        ['class' => \luya\admin\aws\TestActiveWindow::className(), 'label' => 'My Window', 'permissionLevel' => ''],
+...
+```
 
 ## Existing reusable ActiveWindows
 

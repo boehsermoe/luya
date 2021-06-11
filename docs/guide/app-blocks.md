@@ -53,6 +53,8 @@ class TextTransformBlock extends \luya\cms\base\PhpBlock
 }
 ```
 
+> Read more about details regarding {{luya\cms\base\InternalBaseBlock:config()}} in [[app-block-types.md]].
+
 As we have switched to PHPBlock by default you now have to create also a view file, which is located in the view folder of your application: `app/views/blocks/`. The view itself must have the same name as the class name of your block, e.g. `TextTransformBlock.php`. 
 
 In the example above, the view file should look like this:
@@ -182,9 +184,6 @@ If there is a property defined you will get the property object otherwise return
 ## Register Assets and JavaScript/CSS
 
 Sometimes your block should also register some css or js files, therefore you can access the global {{\luya\web\View}} Object inside of your PHP view template. It is quite similar to registering other assets with the difference that you are accessing the global scope view instead of the view on `$this`.
-
-
-> Since LUYA CMS version 1.1 `$appView` is deprecated, use `$this` instead!
 
 Assuming the below code is the PHP View of your Block:
 
@@ -323,6 +322,7 @@ Maybe the application block is not known inside the config files, then there is 
                  'vars' => ['cssClass' => 'bold-font-css-class'],
                  'cfgs' => [], // will be ignore as its empty, so you can also just remove this part.
                  'extras' => [], // will be ignore as its empty, so you can also just remove this part.
+                 'is_default' => 0,
              ],
          ]
     ]

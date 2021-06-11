@@ -17,9 +17,15 @@ use luya\admin\ngrest\base\ActiveButton;
 
 class DuplicateActiveButton extends ActiveButton
 {
-    public $icon = 'control_point_duplicate';
+    public function getDefaultIcon()
+    {
+        return 'control_point_duplicate';
+    }
 
-    public $label = 'Duplicate';
+    public function getDefaultLabel()
+    {
+        return 'Duplicate';
+    }
 
     public function handle(NgRestModel $model)
     {
